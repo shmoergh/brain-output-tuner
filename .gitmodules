@@ -1,0 +1,3 @@
+[submodule "brain-sdk"]
+	path = brain-sdk
+	url = git@github.com:shmoergh/brain-sdk.git
