@@ -40,7 +40,7 @@ int main() {
 	sleep_ms(200);
 
 	// Setup button callbacks
-	buttonDown.setOnRelease([&]() {
+	buttonDown.set_on_release([&]() {
 		int nextVoltage = voltage - 1;
 		if (nextVoltage < 0) {
 			nextVoltage = 10;
@@ -48,7 +48,7 @@ int main() {
 		voltage = nextVoltage;
 	});
 
-	buttonUp.setOnRelease([&]() {
+	buttonUp.set_on_release([&]() {
 		int nextVoltage = voltage + 1;
 		if (nextVoltage > 10) {
 			nextVoltage = 0;
@@ -63,17 +63,17 @@ int main() {
 
 	// Set DC coupling on both outputs
 	printf("Setting DC coupling on both outputs\n");
-	g_dac.setCoupling(
+	g_dac.set_coupling(
 		brain::io::AudioCvOutChannel::kChannelA, brain::io::AudioCvOutCoupling::kDcCoupled);
-	g_dac.setCoupling(
+	g_dac.set_coupling(
 		brain::io::AudioCvOutChannel::kChannelB, brain::io::AudioCvOutCoupling::kDcCoupled);
 
 	sleep_ms(1000);
 
 	// Set voltage output to 10V
 	printf("Setting output voltage to 10V on both outputs\n");
-	g_dac.setVoltage(brain::io::AudioCvOutChannel::kChannelA, float(voltage));
-	g_dac.setVoltage(brain::io::AudioCvOutChannel::kChannelB, float(voltage));
+	g_dac.set_voltage(brain::io::AudioCvOutChannel::kChannelA, float(voltage));
+	g_dac.set_voltage(brain::io::AudioCvOutChannel::kChannelB, float(voltage));
 
 	printf("Setting all LEDs to ON\n");
 	for (uint i = 0; i < 6; i++) {
@@ -90,8 +90,8 @@ int main() {
 	while (true) {
 		buttonDown.update();
 		buttonUp.update();
-		g_dac.setVoltage(brain::io::AudioCvOutChannel::kChannelA, float(voltage));
-		g_dac.setVoltage(brain::io::AudioCvOutChannel::kChannelB, float(voltage));
+		g_dac.set_voltage(brain::io::AudioCvOutChannel::kChannelA, float(voltage));
+		g_dac.set_voltage(brain::io::AudioCvOutChannel::kChannelB, float(voltage));
 
 		// Set LED (binary) to actual voltage
 		for (uint i = 0; i < 6; i++) {
