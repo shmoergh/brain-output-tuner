@@ -4,25 +4,18 @@
 #include "brain-common/brain-common.h"
 #include "brain-io/audio-cv-out.h"
 #include "brain-ui/button.h"
-#include "brain-ui/led.h"
-
-const uint LED_PIN = PICO_DEFAULT_LED_PIN;
+#include "brain-ui/leds.h"
 
 using brain::io::AudioCvOut;
 using brain::io::AudioCvOutChannel;
-using brain::ui::Led;
-
-const uint LED_PINS[] = {
-	BRAIN_LED_1, BRAIN_LED_2, BRAIN_LED_3, BRAIN_LED_4, BRAIN_LED_5, BRAIN_LED_6};
+using brain::ui::Leds;
 
 int main() {
 	stdio_init_all();
 
 	int voltage = 0;
 	AudioCvOut g_dac;
-	brain::ui::Led leds[6] = {brain::ui::Led(LED_PINS[0]), brain::ui::Led(LED_PINS[1]),
-		brain::ui::Led(LED_PINS[2]), brain::ui::Led(LED_PINS[3]), brain::ui::Led(LED_PINS[4]),
-		brain::ui::Led(LED_PINS[5])};
+	Leds leds;
 
 	brain::ui::Button buttonDown = brain::ui::Button(BRAIN_BUTTON_1, 50, 500);
 	brain::ui::Button buttonUp = brain::ui::Button(BRAIN_BUTTON_2, 50, 500);
@@ -33,10 +26,8 @@ int main() {
 
 	// Reset all LEDs to off
 	printf("Resetting all LEDs to OFF\n");
-	for (uint i = 0; i < 6; i++) {
-		leds[i].init();
-		leds[i].off();
-	}
+	leds.init();
+	leds.off_all();
 	sleep_ms(200);
 
 	// Setup button callbacks
@@ -76,16 +67,7 @@ int main() {
 	g_dac.set_voltage(brain::io::AudioCvOutChannel::kChannelB, float(voltage));
 
 	printf("Setting all LEDs to ON\n");
-	for (uint i = 0; i < 6; i++) {
-		leds[i].on();
-	}
-	sleep_ms(1000);
-
-	printf("Setting all LEDs to OFF\n");
-	for (uint i = 0; i < 6; i++) {
-		leds[i].off();
-	}
-	sleep_ms(200);
+	leds.startup_animation();
 
 	while (true) {
 		buttonDown.update();
@@ -94,13 +76,7 @@ int main() {
 		g_dac.set_voltage(brain::io::AudioCvOutChannel::kChannelB, float(voltage));
 
 		// Set LED (binary) to actual voltage
-		for (uint i = 0; i < 6; i++) {
-			if (voltage & (1 << i)) {
-				leds[i].on();
-			} else {
-				leds[i].off();
-			}
-		}
+		leds.set_from_mask(voltage);
 	}
 
 	return 0;
