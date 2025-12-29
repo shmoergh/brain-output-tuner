@@ -18,11 +18,3 @@ Flash the u2f file from the program root to Brain.
 ## Tuning VCOs
 
 Once you tuned the output voltages you can use this program to tune your VCOs.
-
-## Future improvements
-
-- MIDI Channel selector
-- Duophonic mode
-- Velocity on Out 2
-- Modwheel on Out 2
-- Glide / portamento setting
