@@ -1,5 +1,23 @@
 cmake_minimum_required(VERSION 3.22)
 
+# ============================================================================
+# BOARD CONFIGURATION - Comment/uncomment to switch between boards
+# ============================================================================
+
+# Raspberry Pi Pico 2 (RP2350 - ARM Cortex-M33) - ACTIVE
+set(PICO_BOARD pico2)
+set(PICO_PLATFORM rp2350-arm-s)
+
+# Raspberry Pi Pico (RP2040 - ARM Cortex-M0+) - INACTIVE
+# set(PICO_BOARD pico)
+# set(PICO_PLATFORM rp2040)
+
+# Alternative: Raspberry Pi Pico 2 with RISC-V cores
+# set(PICO_BOARD pico2)
+# set(PICO_PLATFORM rp2350-riscv)
+
+# ============================================================================
+
 # Include Pico SDK (from brain-sdk subdirectory)
 include(brain-sdk/pico_sdk_import.cmake)
 
